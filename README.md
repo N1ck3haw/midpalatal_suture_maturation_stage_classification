@@ -47,10 +47,7 @@ Post-training, Grad-CAM was employed to produce three-dimensional heatmaps, high
 
 This repository provides the necessary code and documentation to reproduce the results of the study. Users can download the dataset, preprocess the data, and train the model using the provided scripts.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-For any queries or further information, please contact [Your Name] at [Your Email].
+For any queries or further information, please contact Nick at xyt34809@gmail.com
