@@ -1,5 +1,3 @@
-# midpalatal_suture_maturation_stage_classification
-
 # Midpalatal Suture Maturity Classification Repository
 
 ## Overview
