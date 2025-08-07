@@ -9,6 +9,8 @@ This GitHub repository is dedicated to the development and validation of a deep 
 ## Dataset
 
 The dataset used in this study includes both tabular data and corresponding CBCT images. The tabular data features include:
+- CT
+- Age (4-24)
 - Gender
 - Midpalatal Suture Maturation Stage
 - Dental Age
