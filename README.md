@@ -20,7 +20,7 @@ The dataset used in this study includes both tabular data and corresponding CBCT
 - Maxilla Palate Protrusion Gray Density (GDppm)
 - Soft Palatal Gray Density (GDsp)
 
-Each row in the table is paired with a corresponding CBCT image, serving as the visual modality in the multi-modal dataset. The dataset can be downloaded from [http://ds.smartstudio.cc/](https://ds.smartstudio.cc/).
+Each row in the table is paired with a corresponding CBCT image, serving as the visual modality in the multi-modal dataset. The dataset can be downloaded from [https://ds.smartstudio.cc/](https://ds.smartstudio.cc/).
 
 ## Data Processing
 
