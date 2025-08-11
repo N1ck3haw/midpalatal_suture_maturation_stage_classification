@@ -1,8 +1,63 @@
 import os
 import numpy as np
 import pandas as pd
+import SimpleITK as sitk
+from skimage.transform import resize
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+nii_path = "./nii_data"  # Directory containing .nii files
+numpy_save_path = "./numpy_file_modified"  # Directory to save .npy files
+os.makedirs(numpy_save_path, exist_ok=True)  # Create directory if it doesn't exist
+target_size = (128, 128, 128)
+
+# Define the processing function
+def process_nii_file(file_path, save_path, target_size):
+    try:
+        # Read the NIfTI file and convert it to an array
+        image = sitk.ReadImage(file_path)
+        image_array = sitk.GetArrayFromImage(image)
+        
+        # Normalize to [0, 1]
+        image_array = (image_array - np.min(image_array)) / (np.max(image_array) - np.min(image_array))
+        
+        # Resize to the target size
+        image_resized = resize(image_array, target_size, mode='constant', preserve_range=True)
+        
+        # Add channel dimension
+        image_resized = np.expand_dims(image_resized, axis=-1)
+        
+        # Save as a NumPy file
+        np.save(save_path, image_resized)
+        print(f"Saved {save_path}")
+    except Exception as e:
+        print(f"Error processing {file_path}: {e}")
+
+# Get all .nii files
+nii_files = []
+for root, _, files in os.walk(nii_path):
+    for file_name in files:
+        if file_name.endswith(".nii"):
+            nii_files.append(os.path.join(root, file_name))
+
+# Use ProcessPoolExecutor for parallel processing
+if __name__ == "__main__":
+    with ProcessPoolExecutor() as executor:
+        futures = []
+        for file_path in nii_files:
+            file_name = os.path.basename(file_path)
+            ct_number = file_name.split(".")[0]
+            save_path = os.path.join(numpy_save_path, f"{ct_number}.npy")
+            futures.append(executor.submit(process_nii_file, file_path, save_path, target_size))
+        
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+print("All NIfTI files have been processed and saved as .npy.")
 
 # Load tabular data
 csv_path = "./data.csv"
@@ -224,3 +279,4 @@ Epoch 246/300, Loss: 0.1437671184539795, Accuracy: 0.9541666666666667
 Stopping training as accuracy has reached 0.9542 which is >= 0.95
 Best model loaded with accuracy: 0.9541666666666667
 '''
+
